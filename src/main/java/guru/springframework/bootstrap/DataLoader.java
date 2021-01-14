@@ -4,15 +4,17 @@ import guru.springframework.domain.*;
 import guru.springframework.repositories.CategoryRepository;
 import guru.springframework.repositories.RecipeRepository;
 import guru.springframework.repositories.UnitOfMeasureRepository;
-import org.springframework.boot.CommandLineRunner;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Component
 public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -27,7 +29,10 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
+
+        log.debug("Loading Bootstrap Data");
 
         List<Recipe> recipes = new ArrayList<>();
 
@@ -67,9 +72,10 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
                 "\n" +
                 "4 Serve: Serve immediately, or if making a few hours ahead, place plastic wrap on the surface of the guacamole and press down to cover it and to prevent air reaching it. (The oxygen in the air causes oxidation which will turn the guacamole brown.) Refrigerate until ready to serve.");
         Notes guacNotes = new Notes();
-        guacNotes.setRecipe(guacamole);
         guacNotes.setRecipeNotes("Quick guacamole: For a very quick guacamole just take a 1/4 cup of salsa and mix it in with your mashed avocados.");
+
         guacamole.setNotes(guacNotes);
+
         guacamole.addIngredient("ripe avocados", BigDecimal.valueOf(2), eachUom);
         guacamole.addIngredient("Salt", new BigDecimal(".5"), teaspoonUom);
         guacamole.addIngredient("Fresh lime juice or lemon juice", BigDecimal.valueOf(2), tablespoonUom);
@@ -114,8 +120,8 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         tacoNotes.setRecipeNotes("We have a family motto and it is this: Everything goes better in a tortilla.\n" +
                 "\n" +
                 "Any and every kind of leftover can go inside a warm tortilla, usually with a healthy dose of pickled jalapenos. I can always sniff out a late-night snacker when the aroma of tortillas heating in a hot pan on the stove comes wafting through the house.");
-        tacoNotes.setRecipe(tacos);
         tacos.setNotes(tacoNotes);
+
         tacos.addIngredient("Ancho Chili Powder", BigDecimal.valueOf(2), tablespoonUom);
         tacos.addIngredient("Dried Oregano", BigDecimal.valueOf(1), teaspoonUom);
         tacos.addIngredient("Dried Cumin", BigDecimal.valueOf(1), teaspoonUom);
