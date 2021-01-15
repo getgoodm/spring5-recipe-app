@@ -3,6 +3,8 @@ version: 2.1
 orbs:
   maven: circleci/maven@1.0.3
 
+environment:
+  MAVEN_OPTS: -Xmx512m --add-modules java.xml.bind
 workflows:
   maven_test:
     jobs:
