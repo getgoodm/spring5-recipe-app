@@ -57,4 +57,10 @@ public class Recipe {
         ingredient.setRecipe(this);
         ingredients.add(ingredient);
     }
+
+    public Recipe addIngredient(Ingredient ingredient){
+        ingredient.setRecipe(this);
+        this.ingredients.add(ingredient);
+        return this;
+    }
 }
